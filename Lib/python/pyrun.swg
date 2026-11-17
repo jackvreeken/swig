@@ -1355,7 +1355,11 @@ SWIG_Python_GetSwigThis(PyObject *pyobj)
 
   obj = 0;
 
+#if (PY_VERSION_HEX >= 0x030d0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030d0000)
+  PyObject_GetOptionalAttr(pyobj, SWIG_This(), &obj);
+#else
   obj = PyObject_GetAttr(pyobj, SWIG_This());
+#endif
   if (obj) {
     SWIG_Py_DECREF(obj);
   } else {

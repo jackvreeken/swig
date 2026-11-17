@@ -8,6 +8,11 @@ Version 4.6.0 (in progress)
 ===========================
 
 2026-11-17: jackvreeken
+            [Python] Faster overload resolution when not using -builtin with Python
+            3.13 or later, when an argument such as a float or str does not match a
+            pointer parameter.
+
+2026-11-17: jackvreeken
             [Python] Faster calls to wrapped functions when not using -builtin with
             Python 3.11 or later, most of all for proxy class arguments and with the
             limited API.
