@@ -757,7 +757,18 @@ SwigPyObject_Check(PyObject *op) {
   } else {
     /* Fallback for multiple modules */
     int cmp;
-    PyObject *tpname = SWIG_PyType_GetFullyQualifiedName(op_type);
+    PyObject *tpname;
+#if (PY_VERSION_HEX >= 0x030b0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030b0000)
+    /* Rule out other types before building the slow fully qualified name */
+    tpname = PyType_GetQualName(op_type);
+    if (!tpname)
+      return 0;
+    cmp = PyUnicode_CompareWithASCIIString(tpname, "SwigPyObject");
+    SWIG_Py_DECREF(tpname);
+    if (cmp != 0)
+      return 0;
+#endif
+    tpname = SWIG_PyType_GetFullyQualifiedName(op_type);
     if (!tpname)
       return 0;
     cmp = PyUnicode_CompareWithASCIIString(tpname, SWIG_RUNTIME_MODULE ".SwigPyObject");
